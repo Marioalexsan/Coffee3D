@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Coffee\Color.cpp" />
+    <ClCompile Include="src\Coffee\Model.cpp" />
+    <ClCompile Include="src\Coffee\Texture.cpp" />
+    <ClCompile Include="src\Coffee\ModelDrawable.cpp" />
+    <ClCompile Include="src\Coffee\SceneNode.cpp" />
+    <ClCompile Include="src\Coffee\Scene.cpp" />
+    <ClCompile Include="src\Coffee\ModelGenerator.cpp" />
+    <ClCompile Include="src\Coffee\GraphicsContext.cpp" />
+    <ClCompile Include="src\Coffee\Shader.cpp" />
+    <ClCompile Include="src\Coffee\RenderState.cpp" />
+    <ClCompile Include="src\Coffee\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Coffee\Color.hpp" />
+    <ClInclude Include="include\Coffee\SceneNode.hpp" />
+    <ClInclude Include="include\Coffee\Drawable.hpp" />
+    <ClInclude Include="include\Coffee\Texture.hpp" />
+    <ClInclude Include="include\Coffee\Coffee.hpp" />
+    <ClInclude Include="include\Coffee\Vertex.hpp" />
+    <ClInclude Include="include\Coffee\ModelDrawable.hpp" />
+    <ClInclude Include="include\Coffee\Model.hpp" />
+    <ClInclude Include="include\Coffee\Scene.hpp" />
+    <ClInclude Include="include\Coffee\PixelFormat.hpp" />
+    <ClInclude Include="include\Coffee\ModelGenerator.hpp" />
+    <ClInclude Include="include\Coffee\GraphicsContext.hpp" />
+    <ClInclude Include="include\Coffee\Shader.hpp" />
+    <ClInclude Include="include\Coffee\ShaderType.hpp" />
+    <ClInclude Include="include\Coffee\RenderState.hpp" />
+    <ClInclude Include="include\Coffee\Window.hpp" />
+  </ItemGroup>
+</Project>

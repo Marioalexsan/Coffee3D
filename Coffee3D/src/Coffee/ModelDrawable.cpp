@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace coffee
+namespace cf
 {
 	void ModelDrawable::model(const Model& model)
 	{
@@ -14,11 +14,6 @@ namespace coffee
 		return m_model;
 	}
 
-	glm::mat4& ModelDrawable::transform()
-	{
-		return m_transform;
-	}
-
 	void ModelDrawable::draw(RenderState state) const
 	{
 		if (!(m_model && m_model->m_vaoid))
@@ -26,7 +21,7 @@ namespace coffee
 
 		glBindVertexArray(m_model->m_vaoid);
 
-		state.modelMatrix *= m_transform;
+		state.modelMatrix *= getMatrix();
 
 		glm::mat4 mvpMatrix = state.projectionMatrix * state.viewMatrix * state.modelMatrix;
 

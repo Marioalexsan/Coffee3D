@@ -1,9 +1,22 @@
 #include <Coffee/Window.hpp>
+#include <Coffee/Color.hpp>
+#include <GLFW/glfw3.h>
 
-namespace coffee
+namespace cf
 {
+    bool Window::s_glfwInited = false;
+    GLFWwindow* Window::s_lastContext = nullptr;
+
     Window::Window(const std::string& title, unsigned int width, unsigned int height)
     {
+        if (!s_glfwInited)
+        {
+            s_glfwInited = true;
+
+            if (!glfwInit())
+                throw std::exception("GLFW failed to init.");
+        }
+
         if (open(title, width, height))
             useContext();
     }
@@ -31,10 +44,30 @@ namespace coffee
         if (!m_window)
             return false;
 
+        glfwSetInputMode(m_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+        glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetWindowUserPointer(m_window, this);
+        glfwSetKeyCallback(m_window, static_key_callback);
+        glfwSetMouseButtonCallback(m_window, static_mouse_callback);
+        glfwSetCursorPosCallback(m_window, static_mouse_pos_callback);
+
         m_width = width;
         m_height = height;
 
         return true;
+    }
+
+    void Window::clear(Color color)
+    {
+        useContext();
+
+        glClearColor(color.r, color.g, color.b, color.a);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void Window::display()
+    {
+        glfwSwapBuffers(m_window);
     }
 
     bool Window::useContext()
@@ -42,13 +75,22 @@ namespace coffee
         if (!m_window)
             return false;
 
-        glfwMakeContextCurrent(m_window);
+        // Check if there's a context change to begin with
+        if (this->m_window == s_lastContext)
+            return true;
+
+        s_lastContext = this->m_window;
+
+        glfwMakeContextCurrent(m_window); 
 
         // https://stackoverflow.com/questions/35683334/call-glewinit-once-for-each-rendering-context-or-exactly-once-for-the-whole-app
         GLenum glewStatus = glewInit();
 
         if (glewStatus != GLEW_OK)
             return false;
+
+        glEnable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
 
         return true;
     }
@@ -68,5 +110,54 @@ namespace coffee
         m_window = nullptr;
         m_width = 0;
         m_height = 0;
+    }
+
+    bool Window::closeEventReceived()
+    {
+        if (!m_window)
+            return false;
+
+        return glfwWindowShouldClose(m_window);
+    }
+
+    bool Window::viewport(int x, int y, int width, int height)
+    {
+        if (!m_window)
+            return false;
+
+        useContext();
+        glViewport(x, y, width, height);
+
+        return true;
+    }
+
+    void Window::static_key_callback(GLFWwindow* glfw, int key, int scancode, int action, int mods)
+    {
+        cf::Window* window = (cf::Window*)glfwGetWindowUserPointer(glfw);
+
+        if (!window || !window->m_keyCallback)
+            return;
+
+        window->m_keyCallback(key, scancode, action, mods);
+    }
+
+    void Window::static_mouse_callback(GLFWwindow* glfw, int button, int action, int mods)
+    {
+        cf::Window* window = (cf::Window*)glfwGetWindowUserPointer(glfw);
+
+        if (!window || !window->m_buttonCallback)
+            return;
+
+        window->m_buttonCallback(button, action, mods);
+    }
+
+    void Window::static_mouse_pos_callback(GLFWwindow* glfw, double xpos, double ypos)
+    {
+        cf::Window* window = (cf::Window*)glfwGetWindowUserPointer(glfw);
+
+        if (!window || !window->m_buttonCallback)
+            return;
+
+        window->m_buttonPosCallback(xpos, ypos);
     }
 }

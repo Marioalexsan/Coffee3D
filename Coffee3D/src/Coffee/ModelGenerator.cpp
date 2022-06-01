@@ -61,7 +61,7 @@ namespace
 	}
 }
 
-namespace coffee
+namespace cf
 {
 	Model ModelGenerator::sphere()
 	{
@@ -132,7 +132,80 @@ namespace coffee
 
 		Model model;
 
-		model.load(std::span<coffee::Vertex>(v.data(), v.size()), std::span<glm::uvec3>(triangles.data(), triangles.size()));
+		model.load(std::span<cf::Vertex>(v.data(), v.size()), std::span<glm::uvec3>(triangles.data(), triangles.size()));
+
+		return model;
+	}
+
+	Model ModelGenerator::box()
+	{
+		std::vector<Vertex> vertices = {
+			// Bottom face
+			{ glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(+0.5, -0.5, -0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(-0.5, -0.5, +0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(+0.5, -0.5, +0.5), glm::vec2(1, 1), Color::White },
+
+			// Front face
+			{ glm::vec3(-0.5, -0.5, +0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(+0.5, -0.5, +0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(-0.5, +0.5, +0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(+0.5, +0.5, +0.5), glm::vec2(1, 1), Color::White },
+
+			// Left face
+			{ glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(-0.5, -0.5, +0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(-0.5, +0.5, -0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(-0.5, +0.5, +0.5), glm::vec2(1, 1), Color::White },
+
+			// Back face
+			{ glm::vec3(+0.5, -0.5, -0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(-0.5, -0.5, -0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(+0.5, +0.5, -0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(-0.5, +0.5, -0.5), glm::vec2(1, 1), Color::White },
+
+			// Right face
+			{ glm::vec3(+0.5, -0.5, +0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(+0.5, -0.5, -0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(+0.5, +0.5, +0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(+0.5, +0.5, -0.5), glm::vec2(1, 1), Color::White },
+
+			// Top face
+			{ glm::vec3(-0.5, +0.5, +0.5), glm::vec2(0, 0), Color::White },
+			{ glm::vec3(+0.5, +0.5, +0.5), glm::vec2(0, 1), Color::White },
+			{ glm::vec3(-0.5, +0.5, -0.5), glm::vec2(1, 0), Color::White },
+			{ glm::vec3(+0.5, +0.5, -0.5), glm::vec2(1, 1), Color::White }
+		};
+
+		std::vector<glm::uvec3> order = {
+			// Bottom face
+			glm::uvec3(0, 1, 2),
+			glm::uvec3(1, 2, 3),
+
+			// Front face
+			glm::uvec3(4, 5, 6),
+			glm::uvec3(5, 6, 7),
+
+			// Left face
+			glm::uvec3(8, 9, 10),
+			glm::uvec3(9, 10, 11),
+
+			// Back face
+			glm::uvec3(12, 13, 14),
+			glm::uvec3(13, 14, 15),
+
+			// Right face
+			glm::uvec3(16, 17, 18),
+			glm::uvec3(17, 18, 19),
+
+			// Top face
+			glm::uvec3(20, 21, 22),
+			glm::uvec3(21, 22, 23)
+		};
+
+		Model model;
+
+		model.load(vertices, order);
 
 		return model;
 	}

@@ -5,7 +5,7 @@ namespace
 {
 }
 
-namespace coffee
+namespace cf
 {
 	Model::~Model()
 	{
@@ -34,6 +34,15 @@ namespace coffee
 
 	bool Model::load(const std::span<Vertex>& vertices, const std::span<glm::uvec3>& order)
 	{
+		// Always generate the VAO and bind it
+		// Otherwise we may mess up the previously bound VAO (if any)
+		if (!m_vaoid)
+		{
+			glGenVertexArrays(1, &m_vaoid);
+		}
+
+		glBindVertexArray(m_vaoid);
+
 		if (!m_vboid)
 		{
 			glCreateBuffers(1, &m_vboid);
@@ -61,13 +70,6 @@ namespace coffee
 		{
 			glDeleteBuffers(1, &m_eboid);
 		}
-
-		if (!m_vaoid)
-		{
-			glGenVertexArrays(1, &m_vaoid);
-		}
-
-		glBindVertexArray(m_vaoid);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vboid);
 

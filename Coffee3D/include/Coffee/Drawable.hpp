@@ -3,7 +3,7 @@
 
 #include <Coffee/RenderState.hpp>
 
-namespace coffee
+namespace cf
 {
 	class Drawable
 	{

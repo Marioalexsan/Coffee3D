@@ -3,13 +3,15 @@
 
 #include <Coffee/Model.hpp>
 
-namespace coffee
+namespace cf
 {
     struct ModelGenerator
     {
         ModelGenerator() = delete;
 
 		static Model sphere();
+
+        static Model box();
     };
 }
 

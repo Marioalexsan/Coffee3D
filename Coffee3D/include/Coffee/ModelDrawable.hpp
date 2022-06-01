@@ -3,10 +3,11 @@
 
 #include <Coffee/Drawable.hpp>
 #include <Coffee/Model.hpp>
+#include <Coffee/Transformable.hpp>
 
-namespace coffee
+namespace cf
 {
-	class ModelDrawable : public Drawable
+	class ModelDrawable : public Drawable, public Transformable
 	{
 	public:
 		ModelDrawable() = default;
@@ -20,11 +21,8 @@ namespace coffee
 		void model(const Model& model);
 		const Model* model();
 
-		glm::mat4& transform();
-
 	private:
 
-		glm::mat4 m_transform;
 		const Model* m_model = nullptr;
 	};
 }

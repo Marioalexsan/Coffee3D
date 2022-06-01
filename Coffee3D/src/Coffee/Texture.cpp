@@ -9,13 +9,13 @@
 
 namespace
 {
-    const std::map<coffee::PixelFormat, GLint> formatMap = {
-        {coffee::PixelFormat::RGB, GL_RGB},
-        {coffee::PixelFormat::RGBA, GL_RGBA}
+    const std::map<cf::PixelFormat, GLint> formatMap = {
+        {cf::PixelFormat::RGB, GL_RGB},
+        {cf::PixelFormat::RGBA, GL_RGBA}
     };
 }
 
-namespace coffee
+namespace cf
 {
     Texture::Texture(const std::string& file)
     {
@@ -82,7 +82,7 @@ namespace coffee
     {
         int width = 0, height = 0, nrChannels = 0;
 
-        std::unique_ptr<uint8_t> data(stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0));
+        std::unique_ptr<uint8_t, void(*)(uint8_t*)> data(stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0), [](uint8_t* ptr) { stbi_image_free(ptr); });
 
         if (nrChannels == 3)
             return load(data.get(), width, height, PixelFormat::RGB);

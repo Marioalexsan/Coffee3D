@@ -4,18 +4,18 @@
 
 namespace
 {
-    const std::map<coffee::ShaderType, GLenum> shaderTypeMap = {
-        {coffee::ShaderType::Vertex, GL_VERTEX_SHADER},
-        {coffee::ShaderType::Fragment, GL_FRAGMENT_SHADER}
+    const std::map<cf::ShaderType, GLenum> shaderTypeMap = {
+        {cf::ShaderType::Vertex, GL_VERTEX_SHADER},
+        {cf::ShaderType::Fragment, GL_FRAGMENT_SHADER}
     };
 
-    const std::map<coffee::ShaderType, std::string> shaderDisplay = {
-        {coffee::ShaderType::Vertex, "Vertex Shader"},
-        {coffee::ShaderType::Fragment, "Fragment Shader"}
+    const std::map<cf::ShaderType, std::string> shaderDisplay = {
+        {cf::ShaderType::Vertex, "Vertex Shader"},
+        {cf::ShaderType::Fragment, "Fragment Shader"}
     };
 }
 
-namespace coffee
+namespace cf
 {
     Shader::Shader(Shader&& other) noexcept
     {

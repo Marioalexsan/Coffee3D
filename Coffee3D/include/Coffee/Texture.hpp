@@ -7,7 +7,7 @@
 #include <string>
 #include <Coffee/PixelFormat.hpp>
 
-namespace coffee
+namespace cf
 {
 
     class Texture

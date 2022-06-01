@@ -5,7 +5,7 @@
 #include <Coffee/Shader.hpp>
 #include <glm/glm.hpp>
 
-namespace coffee
+namespace cf
 {
     struct RenderState
     {

@@ -1,7 +1,7 @@
 #ifndef COFFEE_COLOR_HPP
 #define COFFEE_COLOR_HPP
 
-namespace coffee
+namespace cf
 {
 	struct Color
 	{

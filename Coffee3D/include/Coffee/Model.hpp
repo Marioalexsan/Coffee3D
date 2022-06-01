@@ -7,7 +7,7 @@
 
 #include <span>
 
-namespace coffee
+namespace cf
 {
 	class Model
 	{

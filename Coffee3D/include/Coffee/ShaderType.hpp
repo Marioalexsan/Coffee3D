@@ -1,7 +1,7 @@
 #ifndef COFFEE_SHADERTYPE_HPP
 #define COFFEE_SHADERTYPE_HPP
 
-namespace coffee
+namespace cf
 {
     enum class ShaderType
     {

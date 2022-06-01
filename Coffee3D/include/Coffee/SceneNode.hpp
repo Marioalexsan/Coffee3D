@@ -1,32 +1,17 @@
-#ifndef COFFEE_SCENE_HPP
-#define COFFEE_SCENE_HPP
+#ifndef COFFEE_SCENENODE_HPP
+#define COFFEE_SCENENODE_HPP
 
 #include <Coffee/Drawable.hpp>
+#include <Coffee/Transformable.hpp>
 #include <glm/glm.hpp>
 #include <vector>
 
-namespace coffee
+namespace cf
 {
-    class SceneNode
+    struct SceneNode : public Transformable
     {
-    public:
-        SceneNode() = default;
-
-        SceneNode(const Drawable* drawable) :
-            m_drawable(drawable)
-        { }
-
-        void renderScene(RenderState state) const;
-
-        const Drawable*         m_drawable = nullptr;
-        std::vector<SceneNode>  m_children;
-        glm::mat4				m_transform = glm::mat4(1.0f);
-
-    private:
-
-        void renderSceneDFS(RenderState state) const;
-        void renderSceneBFS(RenderState state) const;
+        const Drawable* drawable = nullptr;
     };
 }
 
-#endif // COFFEE_SCENE_HPP
+#endif // COFFEE_SCENENODE_HPP

@@ -1,6 +1,6 @@
 #include <Coffee/Color.hpp>
 
-namespace coffee
+namespace cf
 {
 	const Color Color::White = Color(1, 1, 1);
 	const Color Color::Blue = Color(0, 0, 1);

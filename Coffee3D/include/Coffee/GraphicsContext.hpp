@@ -1,7 +1,7 @@
 #ifndef COFFEE_GRAPHICSCONTEXT_HPP
 #define COFFEE_GRAPHICSCONTEXT_HPP
 
-namespace coffee
+namespace cf
 {
     class RenderTarget
     {

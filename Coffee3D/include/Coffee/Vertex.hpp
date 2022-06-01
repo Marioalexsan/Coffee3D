@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <Coffee/Color.hpp>
 
-namespace coffee
+namespace cf
 {
 	struct Vertex
 	{

@@ -13,6 +13,8 @@
     <ClCompile Include="src\Coffee\Shader.cpp" />
     <ClCompile Include="src\Coffee\RenderState.cpp" />
     <ClCompile Include="src\Coffee\Window.cpp" />
+    <ClCompile Include="src\Coffee\Camera.cpp" />
+    <ClCompile Include="src\Coffee\Transformable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Coffee\Color.hpp" />
@@ -31,5 +33,8 @@
     <ClInclude Include="include\Coffee\ShaderType.hpp" />
     <ClInclude Include="include\Coffee\RenderState.hpp" />
     <ClInclude Include="include\Coffee\Window.hpp" />
+    <ClInclude Include="include\Coffee\Camera.hpp" />
+    <ClInclude Include="include\Coffee\Transformable.hpp" />
+    <ClInclude Include="include\Coffee\Utility.hpp" />
   </ItemGroup>
 </Project>

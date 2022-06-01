@@ -5,7 +5,7 @@
 #include <string>
 #include <Coffee/ShaderType.hpp>
 
-namespace coffee
+namespace cf
 {
     class Shader
     {

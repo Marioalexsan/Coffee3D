@@ -13,5 +13,8 @@
 #include <Coffee/Texture.hpp>
 #include <Coffee/Vertex.hpp>
 #include <Coffee/Window.hpp>
+#include <Coffee/Utility.hpp>
+#include <Coffee/Camera.hpp>
+#include <Coffee/Transformable.hpp>
 
 #endif

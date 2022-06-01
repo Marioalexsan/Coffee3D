@@ -13,6 +13,7 @@
 #include <GLFW/glfw3.h>
 
 #include <Coffee/Coffee.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 const std::string fs_code =
 "#version 400\n"
@@ -52,110 +53,202 @@ const std::string vs_code =
 "Position = aPos;"
 "}";
 
-void printShaderInfoLog(GLuint obj)
-{
-    int infologLength = 0;
-    int charsWritten = 0;
-    char* infoLog;
-
-    glGetShaderiv(obj, GL_INFO_LOG_LENGTH, &infologLength);
-
-    if (infologLength > 0)
-    {
-        infoLog = (char*)malloc(infologLength);
-        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
-        printf("%s\n", infoLog);
-        free(infoLog);
-    }
-}
-
-void printProgramInfoLog(GLuint obj)
-{
-    int infologLength = 0;
-    int charsWritten = 0;
-    char* infoLog;
-
-    glGetProgramiv(obj, GL_INFO_LOG_LENGTH, &infologLength);
-
-    if (infologLength > 0)
-    {
-        infoLog = (char*)malloc(infologLength);
-        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
-        printf("%s\n", infoLog);
-        free(infoLog);
-    }
-}
-
 int main(int argc, char** argv)
 {
-    if (!glfwInit())
-        return -1;
+    cf::Window window = cf::Window("Hello world!", 800, 600);
 
-    coffee::Window window = coffee::Window("Hello world!", 800, 600);
+    cf::Texture tex = cf::Texture("wallRGBA.png");
 
-    coffee::Texture tex = coffee::Texture("wallRGBA.png");
-
-    coffee::Shader shader = coffee::Shader();
-    shader.load(coffee::ShaderType::Vertex, vs_code);
-    shader.load(coffee::ShaderType::Fragment, fs_code);
+    cf::Shader shader = cf::Shader();
+    shader.load(cf::ShaderType::Vertex, vs_code);
+    shader.load(cf::ShaderType::Fragment, fs_code);
 
     std::cout << "Shader load status: " << shader.ready() << "\n";
     std::cout << "Shader logs: " << shader.getCombinedLogs() << "\n";
 
-    coffee::Model model = coffee::ModelGenerator::sphere();
+    cf::Model box = cf::ModelGenerator::box();
+    cf::Model sphere = cf::ModelGenerator::sphere();
 
-    coffee::ModelDrawable obj = coffee::ModelDrawable(model);
-    coffee::ModelDrawable obj2 = coffee::ModelDrawable(model);
-    coffee::ModelDrawable obj3 = coffee::ModelDrawable(model);
+    cf::ModelDrawable obj = cf::ModelDrawable(box);
+    cf::ModelDrawable obj2 = cf::ModelDrawable(sphere);
+    cf::ModelDrawable obj3 = cf::ModelDrawable(sphere);
+    cf::ModelDrawable wall = cf::ModelDrawable(box);
 
-    glClearColor(1, 1, 1, 1);
+    //wall.move({10, 0, 10});
+    wall.scaleBy(5.0, 5.0, 1.0);
 
-    glm::vec3 viewPos = glm::vec3(10.0, 0.0, 0.0);
+    cf::Scene scene;
 
-    glViewport(0, 0, 800, 600);
+    scene.createRootNode("First");
+    scene.createNode("Second");
+    scene.createNode("Third");
+    scene.createRootNode("XAxis");
 
-    coffee::SceneNode render;
+    scene.createRootNode("Wall1");
+    scene.getNode("Wall1")->drawable = &wall;
+    scene.getNode("Wall1")->move({ 10, 10, 0 });
 
-    render.m_children.push_back(coffee::SceneNode(&obj));
-    render.m_children[0].m_transform *= glm::translate(glm::vec3(0.0, 0.0, -1.0));
-    render.m_children[0].m_children.push_back(coffee::SceneNode(&obj2));
-    render.m_children[0].m_children[0].m_children.push_back(coffee::SceneNode(&obj3));
+    scene.createRootNode("Wall2");
+    scene.getNode("Wall2")->drawable = &wall;
+    scene.getNode("Wall2")->move({ -10, 10, 0 });
 
-    glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+    scene.createRootNode("Wall3");
+    scene.getNode("Wall3")->drawable = &wall;
+    scene.getNode("Wall3")->move({ -10, -10, 0 });
+
+    scene.createRootNode("Wall4");
+    scene.getNode("Wall4")->drawable = &wall;
+    scene.getNode("Wall4")->move({ 10, -10, 0 });
+
+    scene.connect("First", "Second");
+    scene.connect("Second", "Third");
+
+    scene.getNode("First")->drawable = &obj;
+    scene.getNode("First")->move({ 0.f, 0.f, 0.f });
+
+    scene.getNode("Second")->drawable = &obj2;
+
+    scene.getNode("Third")->drawable = &obj3;
+    scene.getNode("Wall1")->drawable = &wall;
+
+    window.viewport(0, 0, 800, 600);
+
+    cf::Scene scene2;
+
+    scene2.createRootNode("Ligma");
+    scene2.getNode("Ligma")->move({ 0.0f, 0.0f, -40.0f });
+    scene2.createChildNode("Ligma", "Ligma2");
+    scene2.getNode("Ligma2")->yaw(glm::pi<float>() / 4);
+    scene2.getNode("Ligma2")->drawable = &scene;
+
+    cf::Camera camera(glm::pi<float>() / 4.f, glm::pi<float>() / 4.f, 100.0f);
+
+    camera.position(glm::vec3(0, 0, 10));
 
     float angle = 0.0f;
     float angle2 = 0.0f;
 
+    bool pressingW = false;
+    bool pressingS = false;
+    bool pressingA = false;
+    bool pressingD = false;
+    bool pressingShift = false;
+
+    window.setKeyCallback([&](int key, int scancode, int action, int mods)
+        {
+            pressingW |= key == GLFW_KEY_W && action == GLFW_PRESS;
+            pressingW &= !(key == GLFW_KEY_W && action == GLFW_RELEASE);
+
+            pressingS |= key == GLFW_KEY_S && action == GLFW_PRESS;
+            pressingS &= !(key == GLFW_KEY_S && action == GLFW_RELEASE);
+
+            pressingA |= key == GLFW_KEY_A && action == GLFW_PRESS;
+            pressingA &= !(key == GLFW_KEY_A && action == GLFW_RELEASE);
+
+            pressingD |= key == GLFW_KEY_D && action == GLFW_PRESS;
+            pressingD &= !(key == GLFW_KEY_D && action == GLFW_RELEASE);
+
+            pressingShift = (mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT;
+        }
+    );
+
+    window.setMouseCallback([&](int button, int action, int mods)
+        {
+        }
+    );
+
+
+    bool first = true;
+    double last_xpos = 0;
+    double last_ypos = 0;
+
+    window.setMousePosCallback([&](double xpos, double ypos)
+        {
+            if (!first)
+            {
+                double deltaX = xpos - last_xpos;
+                double deltaY = ypos - last_ypos;
+
+                camera.yawBy((float)deltaX / -300.0f);
+                camera.pitchBy((float)deltaY / -300.f);
+            }
+
+            first = false;
+
+            last_xpos = xpos;
+            last_ypos = ypos;
+        }
+    );
+
+    float deltaTime = 0.16f;
+
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window.getGlfw()))
+    while (!window.closeEventReceived())
     {
+        auto frameStart = std::chrono::system_clock::now();
+
         /* Poll for and process events */
         glfwPollEvents();
 
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        window.clear(cf::Color::White);
 
-        render.m_children[0].m_children[0].m_transform = glm::translate(glm::vec3(3.0f, 0.0f, 0.0f)) * glm::rotate(angle, glm::vec3(0, 1, 0)) * glm::scale(glm::vec3(0.6, 0.6, 0.6));
-        render.m_children[0].m_children[0].m_children[0].m_transform = glm::translate(glm::vec3(3.0f, 0.0f, 0.0f)) * glm::rotate(angle / 2, glm::vec3(1, 0, 0)) * glm::scale(glm::vec3(0.6, 0.6, 0.6));
-        render.m_children[0].m_transform = glm::rotate(angle2, glm::vec3(0, 1, 0));
+        scene.getNode("First")->roll(angle2);
+
+        scene.getNode("Second")->scale(0.6f, 0.6f, 0.6f);
+        scene.getNode("Second")->yaw(angle);
+        scene.getNode("Second")->position({ 3.0f, 0.0f, 0.0f });
+
+        scene.getNode("Third")->scale(0.6f, 0.6f, 0.6f);
+        scene.getNode("Third")->roll(angle / 2);
+        scene.getNode("Third")->position({ 3.0f, 0.0f, 0.0f });
+
+        float speed = 3.5f;
+
+        if (pressingShift)
+        {
+            speed *= 0.4f;
+        }
+
+        if (pressingW)
+        {
+            camera.move(camera.getViewDirection() * speed * deltaTime);
+        }
+        if (pressingS)
+        {
+            camera.move(camera.getViewDirection() * -speed * deltaTime);
+        }
+        if (pressingA)
+        {
+            camera.move(glm::rotateY(glm::vec3(-speed * deltaTime, 0.f, 0.f), camera.yaw()));
+        }
+        if (pressingD)
+        {
+            camera.move(glm::rotateY(glm::vec3(speed * deltaTime, 0.f, 0.f), camera.yaw()));
+        }
+
+        auto cameraPos = camera.position();
+
+        //std::cout << "Camera position: " << cameraPos.x << ' ' << cameraPos.y << ' ' << cameraPos.z << '\n';
 
         angle += glm::pi<float>() / 60.f;
         angle2 += glm::pi<float>() / 180.f;
 
-        coffee::RenderState state;
+        cf::RenderState state;
         state.texture = &tex;
         state.shader = &shader;
-        state.projectionMatrix = glm::perspective(glm::pi<float>() / 6, (float)800 / 600, 0.1f, 100.0f);
-        state.viewMatrix = glm::lookAt(viewPos, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+        state.projectionMatrix = camera.getProjectionMatrix();
+        state.viewMatrix = camera.getViewMatrix();
 
-        render.renderScene(state);
+        scene2.draw(state);
 
+        window.display();
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window.getGlfw());
+        auto frameEnd = std::chrono::system_clock::now();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        if ((frameEnd - frameStart) <= std::chrono::milliseconds(16))
+        {
+            std::this_thread::sleep_for(frameEnd - frameStart);
+        }
     }
 
     glfwTerminate();

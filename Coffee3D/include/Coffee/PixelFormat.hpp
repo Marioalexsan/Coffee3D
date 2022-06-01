@@ -1,7 +1,7 @@
 #ifndef COFFEE_PIXELFORMAT_HPP
 #define COFFEE_PIXELFORMAT_HPP
 
-namespace coffee
+namespace cf
 {
     enum class PixelFormat
     {

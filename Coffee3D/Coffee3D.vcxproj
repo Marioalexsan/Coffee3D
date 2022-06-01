@@ -84,8 +84,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>E:\Repos\Coffee2D\Coffee2D\dependencies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Repos\Coffee2D\Coffee2D\dependencies\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)dependencies\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)dependencies\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,9 +143,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;FREEGLUT_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Repos\Coffee2D\Coffee2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -154,12 +154,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Coffee\Camera.hpp" />
     <ClInclude Include="include\Coffee\GraphicsContext.hpp" />
     <ClInclude Include="include\Coffee\Model.hpp" />
+    <ClCompile Include="src\Coffee\Camera.cpp" />
     <ClCompile Include="src\Coffee\Color.cpp" />
     <ClCompile Include="src\Coffee\GraphicsContext.cpp" />
     <ClCompile Include="src\Coffee\ModelDrawable.cpp" />
@@ -170,8 +172,11 @@
     <ClCompile Include="src\Coffee\Shader.cpp" />
     <ClCompile Include="src\Coffee\Texture.cpp" />
     <ClCompile Include="src\Coffee\Model.cpp" />
+    <ClCompile Include="src\Coffee\Transformable.cpp" />
     <ClCompile Include="src\Coffee\Window.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClInclude Include="include\Coffee\Transformable.hpp" />
+    <ClInclude Include="include\Coffee\Utility.hpp" />
     <ClInclude Include="include\Coffee\Window.hpp" />
   </ItemGroup>
   <ItemGroup>

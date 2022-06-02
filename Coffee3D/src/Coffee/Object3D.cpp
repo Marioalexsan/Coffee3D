@@ -1,20 +1,30 @@
-#include <Coffee/ModelDrawable.hpp>
+#include <Coffee/Object3D.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace cf
 {
-	void ModelDrawable::model(const Model& model)
+	void Object3D::model(const Model* model)
 	{
-		m_model = &model;
+		m_model = model;
 	}
 
-	const Model* ModelDrawable::model()
+	const Model* Object3D::model()
 	{
 		return m_model;
 	}
 
-	void ModelDrawable::draw(RenderState state) const
+	void Object3D::texture(const Texture* texture)
+	{
+		m_texture = texture;
+	}
+
+	const Texture* Object3D::texture()
+	{
+		return m_texture;
+	}
+
+	void Object3D::draw(RenderState state) const
 	{
 		if (!(m_model && m_model->m_vaoid))
 			return;
@@ -24,6 +34,9 @@ namespace cf
 		state.modelMatrix *= getMatrix();
 
 		glm::mat4 mvpMatrix = state.projectionMatrix * state.viewMatrix * state.modelMatrix;
+
+		if (m_texture)
+			state.texture = m_texture;
 
 		if (state.texture)
 			state.texture->bind();

@@ -4,18 +4,18 @@
 
 namespace cf
 {
-    bool Window::s_glfwInited = false;
     GLFWwindow* Window::s_lastContext = nullptr;
+    std::vector<Window*> Window::s_windows = std::vector<Window*>();
 
     Window::Window(const std::string& title, unsigned int width, unsigned int height)
     {
-        if (!s_glfwInited)
+        if (s_windows.size() == 0)
         {
-            s_glfwInited = true;
-
             if (!glfwInit())
                 throw std::exception("GLFW failed to init.");
         }
+
+        s_windows.push_back(this);
 
         if (open(title, width, height))
             useContext();
@@ -32,6 +32,16 @@ namespace cf
         other.m_window = nullptr;
 
         return *this;
+    }
+
+    Window::~Window()
+    {
+        std::erase(s_windows, this);
+
+        if (s_windows.size() == 0)
+        {
+            glfwTerminate();
+        }
     }
 
     bool Window::open(const std::string& title, unsigned int width, unsigned int height)
@@ -89,6 +99,7 @@ namespace cf
         if (glewStatus != GLEW_OK)
             return false;
 
+        //glEnable(GL_CULL_FACE);
         glEnable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
 
@@ -159,5 +170,10 @@ namespace cf
             return;
 
         window->m_buttonPosCallback(xpos, ypos);
+    }
+
+    void Window::pollEvents()
+    {
+        glfwPollEvents();
     }
 }

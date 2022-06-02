@@ -11,7 +11,8 @@ namespace cf
 {
 	class Model
 	{
-		friend class ModelDrawable;
+		friend class Object3D;
+		friend class Skybox;
 
 	public:
 
@@ -28,7 +29,6 @@ namespace cf
 		void unload();
 
 	private:
-
 		std::size_t m_triangleCount = 0;
 		GLuint m_vaoid = 0;
 		GLuint m_vboid = 0;

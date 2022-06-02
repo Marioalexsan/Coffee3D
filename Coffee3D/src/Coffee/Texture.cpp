@@ -1,7 +1,6 @@
 #include <Coffee/Texture.hpp>
 #include <memory>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 #include <GL/glew.h>
 #include <map>

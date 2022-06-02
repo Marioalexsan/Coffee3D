@@ -5,6 +5,10 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Coffee3D", "Coffee3D\Coffee3D.vcxproj", "{07536FCE-82D3-4DDA-8204-A2AD77FC56E0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{E9488BDC-6CED-4231-A3FE-E1C225787F27}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestingGround", "Examples\TestingGround\TestingGround.vcxproj", "{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,9 +25,20 @@ Global
 		{07536FCE-82D3-4DDA-8204-A2AD77FC56E0}.Release|x64.Build.0 = Release|x64
 		{07536FCE-82D3-4DDA-8204-A2AD77FC56E0}.Release|x86.ActiveCfg = Release|Win32
 		{07536FCE-82D3-4DDA-8204-A2AD77FC56E0}.Release|x86.Build.0 = Release|Win32
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Debug|x64.ActiveCfg = Debug|x64
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Debug|x64.Build.0 = Debug|x64
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Debug|x86.ActiveCfg = Debug|Win32
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Debug|x86.Build.0 = Debug|Win32
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Release|x64.ActiveCfg = Release|x64
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Release|x64.Build.0 = Release|x64
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Release|x86.ActiveCfg = Release|Win32
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE7CAD56-E5B3-4F8B-AFB4-2E9F17558728} = {E9488BDC-6CED-4231-A3FE-E1C225787F27}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2447FC44-206B-437C-96CA-380624EA2354}

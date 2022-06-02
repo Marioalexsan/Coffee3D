@@ -4,6 +4,44 @@
 
 namespace
 {
+    const std::string fs_code =
+        "#version 400\n"
+
+        "in vec3 Position;"
+        "in vec2 TexCoord;"
+        "in vec4 Color;"
+
+        "out vec4 FragColor;"
+
+        "uniform sampler2D tex;"
+
+        "void main()"
+        "{"
+        "FragColor = Color * texture(tex, TexCoord);"
+        "}";
+
+    const std::string vs_code =
+        "#version 400\n"
+
+        "layout(location = 0) in vec3 aPos;"
+        "layout(location = 1) in vec2 aTexCoord;"
+        "layout(location = 2) in vec4 aColor;"
+
+        "out vec3 Position;"
+        "out vec2 TexCoord;"
+        "out vec4 Color;"
+
+        "uniform sampler2D tex;"
+        "uniform mat4x4 mvpMatrix;"
+
+        "void main()"
+        "{"
+        "gl_Position = mvpMatrix * vec4(aPos, 1.0);"
+        "Color = aColor;"
+        "TexCoord = aTexCoord;"
+        "Position = aPos;"
+        "}";
+
     const std::map<cf::ShaderType, GLenum> shaderTypeMap = {
         {cf::ShaderType::Vertex, GL_VERTEX_SHADER},
         {cf::ShaderType::Fragment, GL_FRAGMENT_SHADER}
@@ -178,5 +216,13 @@ namespace cf
     GLuint Shader::programId() const
     {
         return m_program;
+    }
+
+    Shader Shader::defaultShader()
+    {
+        auto shader = Shader();
+        shader.load(ShaderType::Vertex, vs_code);
+        shader.load(ShaderType::Fragment, fs_code);
+        return shader;
     }
 }

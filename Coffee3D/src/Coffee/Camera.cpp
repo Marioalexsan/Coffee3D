@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <Coffee/Utility.hpp>
 
 namespace cf
 {
@@ -51,13 +52,13 @@ namespace cf
 
     void Camera::pitch(float radians)
     {
-        m_pitch = radians;
+        m_pitch = cf::clamp(radians, -glm::pi<float>() / 2.f + 0.001f, glm::pi<float>() / 2.f - 0.001f);
         m_updateNeeded = true;
     }
 
     void Camera::pitchBy(float radians)
     {
-        m_pitch += radians;
+        m_pitch = cf::clamp(m_pitch + radians, -glm::pi<float>() / 2.f + 0.001f, glm::pi<float>() / 2.f - 0.001f);
         m_updateNeeded = true;
     }
 

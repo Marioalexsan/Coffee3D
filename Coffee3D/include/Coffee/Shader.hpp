@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <string>
 #include <Coffee/ShaderType.hpp>
+#include <memory>
 
 namespace cf
 {
@@ -34,6 +35,8 @@ namespace cf
         std::string getCombinedLogs() const;
 
         GLuint programId() const;
+
+        static Shader defaultShader();
 
     private:
         bool compile();

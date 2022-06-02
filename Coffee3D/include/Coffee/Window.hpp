@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <Coffee/Color.hpp>
 #include <functional>
+#include <vector>
 
 namespace cf
 {
@@ -17,6 +18,8 @@ namespace cf
         Window(const std::string& title, unsigned int width, unsigned int height);
         Window(const Window&) = delete;
         Window(Window&&) noexcept;
+
+        ~Window();
 
         Window& operator=(const Window&) = delete;
         Window& operator=(Window&&) noexcept;
@@ -52,9 +55,11 @@ namespace cf
             m_buttonPosCallback = callback;
         }
 
+        static void pollEvents();
+
     private:
-        static bool s_glfwInited;
         static GLFWwindow* s_lastContext;
+        static std::vector<Window*> s_windows;
 
         GLFWwindow* m_window = nullptr;
 
